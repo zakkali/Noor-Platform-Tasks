@@ -3,277 +3,92 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>وورد إلى نور – استيراد الأسئلة من ملف Word إلى منصة نور</title>
-<meta name="description" content="إضافة مجانية لمتصفحات كروم وإيدج وفايرفوكس تدرج أسئلة الاختبار أو الواجب من ملف Word دفعة واحدة في منصة نور مع صورها. من تطوير زكي المطعني البكري.">
-<meta property="og:title" content="وورد إلى نور – استيراد الأسئلة">
-<meta property="og:description" content="أدرج أسئلة اختبارك من ملف Word في منصة نور بضغطة واحدة، مع الصور والدرجات والإجابات.">
-<meta property="og:type" content="website">
-<meta name="theme-color" content="#5b50d6">
+<title>واجبات نور – استيراد أسئلة Word إلى منصة نور</title>
+<meta name="description" content="واجبات نور: إضافة مجانية لكروم وإيدج وفايرفوكس تدرج أسئلة الواجبات والاختبارات من ملف Word في منصة نور دفعة واحدة. من تطوير زكي المطعني البكري.">
+<meta name="theme-color" content="#0f1226">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f6f6fc; --card: #ffffff; --ink: #1f2140; --muted: #5d6080; --line: #e3e4f3;
-    --brand: #5b50d6; --brand-d: #4338b5; --brand-soft: #eceafc; --ok: #1f8a4c; --warn-bg: #fff7e0; --warn-line: #ecd48a;
-    --shadow: 0 10px 30px rgba(60, 50, 160, .10);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #12132a; --card: #1b1d3a; --ink: #eceefc; --muted: #a6a9cf; --line: #2e3160;
-      --brand: #8b82ff; --brand-d: #a49cff; --brand-soft: #262a5a; --ok: #53d38a; --warn-bg: #2d2a14; --warn-line: #6b5d1c;
-      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-    }
-  }
+  :root { color-scheme: dark; --bg: #0f1226; --card: #181c3a; --line: #2b3066; --ink: #eef0ff; --muted: #a3a8d6; --brand: #8b82ff; }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Tajawal", "Segoe UI", Tahoma, sans-serif; line-height: 1.85; font-size: 17px; }
-  a { color: var(--brand); }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  body { margin: 0; min-height: 100vh; background: radial-gradient(900px 500px at 50% -10%, #272c6e 0%, var(--bg) 60%); color: var(--ink);
+    font-family: "Tajawal", "Segoe UI", Tahoma, sans-serif; font-size: 17px; line-height: 1.8; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 56px 20px 36px; text-align: center; }
+  h1 { font-size: clamp(30px, 6vw, 44px); line-height: 1.3; margin: 0 0 10px; font-weight: 800; }
+  h1 span { color: var(--brand); }
+  p.lead { margin: 0 auto 30px; max-width: 520px; color: var(--muted); font-size: 18px; }
 
-  header.hero { background: linear-gradient(135deg, #5b50d6 0%, #7b6cf0 55%, #4aa3e8 100%); color: #fff; padding: 48px 0 80px; }
-  .hero .badge { display: inline-block; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); padding: 3px 14px; border-radius: 999px; font-size: 14px; }
-  .hero h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.35; margin: 14px 0 10px; font-weight: 800; }
-  .hero p.lead { font-size: clamp(17px, 2.2vw, 21px); max-width: 720px; margin: 0 0 26px; opacity: .96; }
-  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 12px; font: inherit; font-weight: 700; font-size: 16px;
-    text-decoration: none; border: 2px solid transparent; transition: transform .15s, box-shadow .15s; cursor: pointer; }
-  .btn:hover { transform: translateY(-2px); }
-  .btn.light { background: #fff; color: #3b31a8; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
-  .btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.7); }
-  .btn.disabled { opacity: .6; pointer-events: none; }
-  .btn svg { width: 20px; height: 20px; flex: none; }
-
-
-  /* روابط التحميل في أعلى الصفحة */
-  .hero-dl { margin-top: 6px; }
-  .hero-dl h2 { color: #fff; font-size: 22px; margin: 0 0 12px; }
-  .hero-dl .dl { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.4); backdrop-filter: blur(4px); }
-  .hero-dl .dl strong { color: #fff; }
-  .hero-dl .dl small { color: rgba(255,255,255,.88); }
-  .hero-dl .dl .btn { background: #fff; color: #3b31a8; font-size: 17px; padding: 10px 20px; }
-  .hero-dl .dl .btn.disabled { background: rgba(255,255,255,.55); color: #3b31a8; animation: none; }
-  .hero-dl .cta { margin-top: 18px; }
-  .hero-dl .after { margin: 14px 0 0; font-size: 15px; opacity: .9; }
-  .btn.pulse, .hero-dl .dl .btn:not(.disabled) { animation: pulse 1.8s ease-in-out infinite; }
-  .btn.yt { background: #ff2d2d; color: #fff; --ring: 255, 45, 45; }
-  .btn.yt.disabled { background: rgba(255,255,255,.2); color: #fff; animation: none; }
-  .hero-dl .dl .btn { --ring: 255, 255, 255; }
-  .btn:hover { animation-play-state: paused; }
+  .dl { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .btn { --c: #888; --ring: 136, 136, 136; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 18px; border-radius: 14px;
+    background: var(--c); color: #fff; font: inherit; font-weight: 800; font-size: 18px; text-decoration: none;
+    box-shadow: 0 8px 22px rgba(0,0,0,.35); animation: pulse 1.9s ease-in-out infinite; transition: filter .15s; }
+  .btn:hover { filter: brightness(1.12); animation-play-state: paused; }
+  .btn .dot { width: 12px; height: 12px; border-radius: 50%; background: #fff; opacity: .9; flex: none; }
+  .btn.chrome  { --c: #1a73e8; --ring: 26, 115, 232; }
+  .btn.edge    { --c: #0a8f9e; --ring: 10, 143, 158; }
+  .btn.firefox { --c: #ff7139; --ring: 255, 113, 57; }
+  .btn.youtube { --c: #e62d2d; --ring: 230, 45, 45; margin-top: 12px; }
+  .btn.disabled { background: #2a2f63; color: var(--muted); animation: none; box-shadow: none; pointer-events: none; }
+  .btn.disabled .dot { opacity: .35; }
   @keyframes pulse {
-    0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--ring, 255,255,255), .65); }
-    55%  { transform: scale(1.06); box-shadow: 0 0 0 14px rgba(var(--ring, 255,255,255), 0); }
-    100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--ring, 255,255,255), 0); }
+    0%   { transform: scale(1);    box-shadow: 0 8px 22px rgba(0,0,0,.35), 0 0 0 0 rgba(var(--ring), .6); }
+    55%  { transform: scale(1.05); box-shadow: 0 8px 22px rgba(0,0,0,.35), 0 0 0 14px rgba(var(--ring), 0); }
+    100% { transform: scale(1);    box-shadow: 0 8px 22px rgba(0,0,0,.35), 0 0 0 0 rgba(var(--ring), 0); }
   }
-  @media (prefers-reduced-motion: reduce) { .btn.pulse, .hero-dl .dl .btn { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .btn { animation: none; } }
 
-  main { margin-top: -38px; }
-  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 28px clamp(18px, 4vw, 38px); margin-bottom: 26px; }
-  h2 { margin: 0 0 14px; font-size: 26px; line-height: 1.4; }
-  h3 { margin: 22px 0 6px; font-size: 19px; }
-  p { margin: 8px 0; }
-  .muted { color: var(--muted); }
-
-  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 8px; }
-  .feat { background: var(--brand-soft); border-radius: 14px; padding: 16px 18px; }
-  .feat b { display: block; font-size: 18px; margin-bottom: 2px; }
-  .feat span.ic { font-size: 26px; display: block; }
-
-  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 10px 0 0; }
-  ol.steps li { counter-increment: s; position: relative; padding: 4px 58px 14px 0; }
-  ol.steps li::before { content: counter(s); position: absolute; right: 0; top: 2px; width: 40px; height: 40px; border-radius: 50%;
-    background: var(--brand); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 18px; }
-  ol.steps li > b:first-child { display: block; }
-
-  pre.sample { direction: rtl; text-align: right; background: var(--bg); border: 1px dashed var(--line); border-radius: 12px; padding: 16px 18px; overflow-x: auto;
-    font-family: inherit; font-size: 16px; line-height: 2; white-space: pre-wrap; margin: 10px 0; }
-  table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 16px; }
-  th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: right; }
-  th { background: var(--brand-soft); }
-  .table-scroll { overflow-x: auto; }
-
-  .note { background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 12px; padding: 12px 16px; margin: 14px 0; font-size: 16px; }
-  ul.tick { list-style: none; padding: 0; margin: 8px 0; }
-  ul.tick li { padding: 3px 30px 3px 0; position: relative; }
-  ul.tick li::before { content: "✓"; position: absolute; right: 2px; color: var(--ok); font-weight: 800; }
-
-  .dl-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 12px; }
-  .dl { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; background: var(--bg); }
-  .dl strong { font-size: 18px; }
-  .dl small { color: var(--muted); font-size: 14px; line-height: 1.6; }
-  .dl .btn { background: var(--brand); color: #fff; margin-top: 4px; padding: 9px 18px; }
-  .dl .btn.disabled { background: var(--muted); }
-
-  .video { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #000; margin-top: 12px; }
-  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .video-link { margin-top: 12px; }
-
-  details { border-top: 1px solid var(--line); padding: 10px 0; }
-  details:first-of-type { border-top: 0; }
-  summary { cursor: pointer; font-weight: 700; }
-  footer { text-align: center; padding: 26px 20px 46px; color: var(--muted); font-size: 15px; }
+  ol { list-style: none; counter-reset: s; text-align: right; display: grid; gap: 10px; max-width: 480px; margin: 40px auto 0; padding: 0; }
+  ol li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 56px 10px 14px; position: relative; }
+  ol li::before { content: counter(s); position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%;
+    background: var(--brand); color: #12142e; font-weight: 800; display: grid; place-items: center; }
+  .note { margin: 22px auto 0; color: var(--muted); font-size: 15px; }
+  footer { margin-top: 36px; color: var(--muted); font-size: 14px; }
   footer b { color: var(--ink); }
-  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
+<div class="wrap">
+  <h1>واجبات <span>نور</span></h1>
+  <p class="lead">أدرج أسئلة واجباتك واختباراتك من ملف Word في منصة نور دفعة واحدة، مع الصور والدرجات والإجابات.</p>
 
-<header class="hero">
-  <div class="wrap">
-    <span class="badge">إضافة مجانية · كروم · إيدج · فايرفوكس</span>
-    <h1>وورد إلى نور<br>أدرج أسئلة اختبارك في منصة نور بضغطة واحدة</h1>
-    <p class="lead">بدل نسخ الأسئلة واحدًا واحدًا، اختر ملف Word وسيُدرج كل شيء دفعة واحدة في صفحة «إضافة مجموعة مفردات دفعة واحدة»: نصوص الأسئلة والخيارات والصور والدرجات والإجابات الصحيحة.</p>
-    <div id="download" class="hero-dl">
-      <h2>⬇ حمّل الإضافة مجانًا</h2>
-      <div class="dl-grid">
-      <div class="dl">
-        <strong>Google Chrome</strong>
-        <small>من متجر كروم الإلكتروني</small>
-        <a class="btn" data-link="chrome" href="#">⬇ تثبيت على كروم</a>
-      </div>
-      <div class="dl">
-        <strong>Microsoft Edge</strong>
-        <small>من متجر إضافات إيدج، أو من متجر كروم مباشرة (يدعمه إيدج)</small>
-        <a class="btn" data-link="edge" data-fallback="chrome" href="#">⬇ تثبيت على إيدج</a>
-      </div>
-      <div class="dl">
-        <strong>Mozilla Firefox</strong>
-        <small>من موقع إضافات فايرفوكس (AMO)</small>
-        <a class="btn" data-link="firefox" href="#">⬇ تثبيت على فايرفوكس</a>
-      </div>
-    </div>
-      <div class="cta">
-        <a class="btn pulse yt" data-link="youtube" href="#" target="_blank" rel="noopener">▶ شاهد شرح الاستخدام على يوتيوب</a>
-        <a class="btn ghost" href="#how">كيف أستخدمها؟</a>
-      </div>
-      <p class="after">بعد التثبيت حدّث صفحة منصة نور (<bdi>F5</bdi>) ليظهر زر الاستيراد.</p>
-    </div>
+  <div class="dl">
+    <a class="btn chrome"  data-link="chrome"  href="#"><span class="dot"></span>Chrome</a>
+    <a class="btn edge"    data-link="edge" data-fallback="chrome" href="#"><span class="dot"></span>Edge</a>
+    <a class="btn firefox" data-link="firefox" href="#"><span class="dot"></span>Firefox</a>
   </div>
-</header>
+  <a class="btn youtube" data-link="youtube" href="#">▶ شاهد شرح الاستخدام</a>
 
-<main class="wrap">
+  <ol>
+    <li>ثبّت الإضافة وحدّث صفحة نور.</li>
+    <li>افتح «إضافة مجموعة مفردات دفعة واحدة» واضغط <b>📥 استيراد أسئلة من Word</b>.</li>
+    <li>اختر ملف <bdi>.docx</bdi> وراجع الأسئلة ثم اضغط «إدراج».</li>
+    <li>اضغط «إنشاء المفردات» لحفظها.</li>
+  </ol>
+  <p class="note">تُعالج الملفات داخل متصفحك فقط ولا تُرسل إلى أي جهة.</p>
 
-  <section class="card" id="features">
-    <h2>مواصفات الإضافة</h2>
-    <div class="grid">
-      <div class="feat"><span class="ic">📄</span><b>من ملف Word مباشرة</b>تقرأ ملف اختبارك أو واجبك بصيغة <bdi>.docx</bdi> وتحوّله إلى مفردات جاهزة.</div>
-      <div class="feat"><span class="ic">🧩</span><b>أنواع متعددة من الأسئلة</b>اختيار من متعدد، مقالية، صح / خطأ، متعدد الإجابات، وملء الفراغات.</div>
-      <div class="feat"><span class="ic">🖼️</span><b>الصور والأشكال تبقى في مكانها</b>تُنقل الصور والجداول مع سؤالها وتُرفع تلقائيًا إلى المنصة فلا تختفي بعد الحفظ.</div>
-      <div class="feat"><span class="ic">🎯</span><b>الدرجات والإجابات</b>تُقرأ من جدول الإجابات في آخر الملف أو من علامات الدرجة <bdi>[2]</bdi> بجانب السؤال.</div>
-      <div class="feat"><span class="ic">✏️</span><b>معاينة قابلة للتعديل</b>راجع كل سؤال وعدّل نصه أو نوعه أو درجته أو خياراته قبل الإدراج.</div>
-      <div class="feat"><span class="ic">🔒</span><b>خصوصية كاملة</b>تُعالج الملفات داخل متصفحك فقط ولا تُرسل إلى أي جهة، ولا تجمع الإضافة أي بيانات.</div>
-    </div>
-    <h3>تفاصيل تقنية</h3>
-    <ul class="tick">
-      <li>تعمل على صفحة منصة نور فقط (<bdi>lms.moe.gov.om</bdi>) ولا تطلب صلاحيات إضافية.</li>
-      <li>لا تضغط «إنشاء المفردات» عنك؛ تراجع الجدول ثم تحفظ بنفسك.</li>
-      <li>المتصفحات المدعومة: كروم وإيدج 111 فأحدث، وفايرفوكس 128 فأحدث.</li>
-      <li>واجهة عربية بالكامل، مع خط واضح ودعم الوضع الداكن.</li>
-    </ul>
-  </section>
-
-  <section class="card" id="how">
-    <h2>كيف تستخدمها؟</h2>
-    <ol class="steps">
-      <li><b>ثبّت الإضافة</b>من روابط التحميل أدناه وفعّلها في متصفحك، ثم حدّث صفحة نور.</li>
-      <li><b>افتح صفحة «إضافة مجموعة مفردات دفعة واحدة»</b>من حسابك كمعلّم في منصة نور. سيظهر في أسفل الصفحة زر <b>«📥 استيراد أسئلة من Word»</b>.</li>
-      <li><b>اختر ملف Word</b>بصيغة <bdi>.docx</bdi> بالضغط على الزر ثم اختيار الملف (أو اسحبه وأفلته في النافذة).</li>
-      <li><b>راجع المعاينة</b>ستجد كل سؤال في بطاقة: عدّل النص والنوع والدرجة والخيارات، وحدّد الجواب الصحيح، واحذف ما لا تريده. الأسئلة الناقصة تُنبّهك الإضافة إليها.</li>
-      <li><b>اضغط «إدراج»</b>وانتظر قليلًا: ترفع الإضافة الصور إلى المنصة ثم تُنشئ صفوف المفردات وتملأ حقولها.</li>
-      <li><b>راجع الجدول واحفظ</b>تأكد من الأسئلة في الجدول ثم اضغط <b>«إنشاء المفردات»</b> في أسفل الصفحة كما تفعل عادةً.</li>
-    </ol>
-
-    <h3>كيف أُجهّز ملف Word؟</h3>
-    <p>تتعرف الإضافة على الملف بحسب هذه القواعد البسيطة (وهي مناسبة لمعظم نماذج الاختبارات الشائعة):</p>
-    <ul class="tick">
-      <li>يبدأ كل سؤال برقمه بالتسلسل: <bdi>1.</bdi> ثم <bdi>2.</bdi> ثم <bdi>3.</bdi> ...</li>
-      <li>السؤال متعدد الاختيارات يُعرف بوجود عبارة «<b>ظلّل</b> ...»، وتُكتب الخيارات بعده: في سطر واحد تفصل بينها مسافات، أو كل خيار في سطر.</li>
-      <li>أي سؤال آخر يُعدّ مقاليًّا، وتنتقل معه الصور والجداول التي بداخله.</li>
-      <li>الدرجة تُكتب بين قوسين مربعين بجانب السؤال مثل <bdi>[2]</bdi>.</li>
-      <li>في آخر الملف جدول إجابات بالأعمدة التالية، ومنه تؤخذ الدرجات والإجابات الصحيحة:</li>
-    </ul>
-    <div class="table-scroll">
-      <table>
-        <tr><th>المفردة</th><th>الإجابة</th><th>الدرجة</th><th>المعلومات الإضافية</th></tr>
-        <tr><td>1</td><td>المبيض</td><td>1</td><td></td></tr>
-        <tr><td>2</td><td>إنتاج حبوب اللقاح</td><td>2</td><td>لا تقبل: ...</td></tr>
-      </table>
-    </div>
-    <pre class="sample">1. أي جزء في الزهرة يتحول إلى ثمرة؟ (ظلّل الشكل بجوار الإجابة الصحيحة)  [1]
-المتك     الميسم     المبيض     القلم
-
-2. اذكر وظائف الجذر في النبات؟  [2]</pre>
-    <div class="note">⚠ الأسئلة التي تعتمد على رسم أسهم أو حروف فوق الصورة (مثل حرف تسمية) قد لا تنتقل تسميات الرسم؛ تنبّهك الإضافة إلى ذلك لتضيفها يدويًا إن لزم.</div>
-
-    <h3>إن لم تُرفع الصور تلقائيًا</h3>
-    <p>إن رفضت المنصة رفع الصور لأي سبب، تعرض الإضافة رسالة وتتيح لك المتابعة بوضع بديل: تضع علامة صفراء مكان كل صورة وتنزّل ملفًا مضغوطًا بالصور لتضعها يدويًا بزر الصورة في محرر «نص المفردة».</p>
-  </section>
-
-  <section class="card" id="video">
-    <h2>شرح بالفيديو</h2>
-    <p class="muted">شاهد طريقة الاستخدام خطوة بخطوة:</p>
-    <div class="video" id="videoBox" hidden></div>
-    <p class="video-link"><a class="btn" id="ytLink" data-link="youtube" href="#" style="background:var(--brand);color:#fff" target="_blank" rel="noopener">▶ مشاهدة على يوتيوب</a></p>
-  </section>
-
-  <section class="card" id="faq">
-    <h2>أسئلة شائعة</h2>
-    <details><summary>هل تعمل الإضافة على أي موقع؟</summary><p>لا؛ تعمل على صفحات منصة نور فقط (<bdi>lms.moe.gov.om</bdi>)، ويظهر زرها في صفحة «إضافة مجموعة مفردات دفعة واحدة».</p></details>
-    <details><summary>هل ملفاتي وأسئلتي في أمان؟</summary><p>نعم. تُقرأ الملفات داخل المتصفح فقط ولا تُرسل إلى المطوّر ولا إلى أي جهة، ولا تجمع الإضافة أي بيانات. الجهة الوحيدة التي تستلم شيئًا هي منصة نور نفسها: تُرفع إليها صور الأسئلة وتُدرج نصوصها في صفحتها بطلبك.</p></details>
-    <details><summary>هل تحفظ الإضافة الأسئلة تلقائيًا؟</summary><p>لا. تُدرج الأسئلة في جدول الصفحة فقط، وأنت من يضغط «إنشاء المفردات» بعد المراجعة.</p></details>
-    <details><summary>لماذا لم تُتعرَّف بعض أسئلتي؟</summary><p>تأكد من ترقيم الأسئلة بالتسلسل (<bdi>1.</bdi> ثم <bdi>2.</bdi> ...) ومن أن ملفك بصيغة <bdi>.docx</bdi> (احفظ ملفات <bdi>.doc</bdi> القديمة بصيغة docx). وفي المعاينة يمكنك تعديل أي سؤال أو نوعه قبل الإدراج.</p></details>
-    <details><summary>هل الإضافة رسمية؟</summary><p>لا؛ هي إضافة مستقلة غير رسمية، وليست من تطوير وزارة التربية والتعليم أو منصة نور أو شركة Classera ولا مرتبطة بهم. واسم Word علامة تجارية لشركة مايكروسوفت.</p></details>
-  </section>
-
-</main>
-
-<footer>
-  <p>من تطوير <b>زكي المطعني البكري</b></p>
-  <p>إضافة مستقلة غير رسمية · لا ترتبط بوزارة التربية والتعليم أو منصة نور أو مايكروسوفت</p>
-</footer>
+  <footer>
+    <p>من تطوير <b>زكي المطعني البكري</b></p>
+    <p>ارجو الدعاء لي ولوالدي بالمغفرة وحسن الخاتمة.</p>
+  </footer>
+</div>
 
 <script>
-  // ضع روابطك هنا. الرابط الفارغ يجعل الزر معطّلًا مع عبارة «قريبًا» حتى تنشر الإضافة.
-  // youtube: ضع رابط الفيديو الكامل مثل https://www.youtube.com/watch?v=XXXXXXXXXXX أو https://youtu.be/XXXXXXXXXXX
+  // الرابط الفارغ يجعل الزر معطّلًا حتى تضيفه. (إن تُرك رابط إيدج فارغًا يُستخدم رابط كروم.)
   var LINKS = {
-    chrome:  "https://chromewebstore.google.com/detail/iigmoeffaepdjjbiceemjinccolfmoob",   // رابط الإضافة في متجر كروم
-    edge:    "",   // رابط الإضافة في متجر إيدج (إن تُرك فارغًا يُستخدم رابط كروم)
-    firefox: "https://addons.mozilla.org/en-US/firefox/addon/%D9%88%D8%A7%D8%AC%D8%A8%D8%A7%D8%AA_%D9%88%D9%88%D8%B1%D8%AF/",   // رابط الإضافة في إضافات فايرفوكس (AMO)
-    youtube: ""    // رابط فيديو الشرح على يوتيوب
+    chrome:  "https://chromewebstore.google.com/detail/iigmoeffaepdjjbiceemjinccolfmoob",
+    edge:    "",
+    firefox: "https://addons.mozilla.org/en-US/firefox/addon/%D9%88%D8%A7%D8%AC%D8%A8%D8%A7%D8%AA_%D9%88%D9%88%D8%B1%D8%AF/",
+    youtube: ""
   };
-
-  (function () {
-    function youtubeId(u) {
-      var m = /(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([\w-]{11})/.exec(u || "");
-      return m ? m[1] : "";
+  document.querySelectorAll("[data-link]").forEach(function (a) {
+    var url = LINKS[a.dataset.link] || (a.dataset.fallback ? LINKS[a.dataset.fallback] : "");
+    if (url) { a.href = url; a.target = "_blank"; a.rel = "noopener"; }
+    else {
+      a.removeAttribute("href"); a.classList.add("disabled");
+      if (a.dataset.link === "youtube") a.textContent = "▶ فيديو الشرح قريبًا";
     }
-    document.querySelectorAll("[data-link]").forEach(function (a) {
-      var url = LINKS[a.dataset.link] || (a.dataset.fallback ? LINKS[a.dataset.fallback] : "");
-      if (url) {
-        a.href = url;
-        a.target = "_blank";
-        a.rel = "noopener";
-      } else {
-        a.removeAttribute("href");
-        a.classList.add("disabled");
-        a.setAttribute("aria-disabled", "true");
-        if (a.dataset.link !== "youtube") a.textContent = "قريبًا";
-        else a.textContent = "▶ فيديو الشرح قريبًا";
-      }
-    });
-    var id = youtubeId(LINKS.youtube);
-    if (id) {
-      var box = document.getElementById("videoBox");
-      box.hidden = false;
-      var f = document.createElement("iframe");
-      f.src = "https://www.youtube-nocookie.com/embed/" + id;
-      f.title = "شرح استخدام إضافة وورد إلى نور";
-      f.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      f.allowFullscreen = true;
-      f.loading = "lazy";
-      box.appendChild(f);
-    }
-  })();
+  });
 </script>
 </body>
 </html>
